@@ -2,9 +2,10 @@ import random
 from english_words import english_words_lower_set
 
 
-def check_penalties(penalties):
+def check_penalties(penalties, word):
     if penalties >= 12:
         print("YOU LOSE!")
+        print("THE WORD WAS:", word)
         return True
     return False
 
@@ -30,7 +31,7 @@ def hangman():
     tested_letters = []
     penalties = 0
 
-    print("HANGMAN GAME STARTED!")
+    print("GAME STARTED!")
 
     while penalties < 12:
 
@@ -72,7 +73,7 @@ def hangman():
             print("-", penalties, "PENALTIES")
             return
 
-        if check_penalties(penalties):
+        if check_penalties(penalties, word):
             return
 
 hangman()
