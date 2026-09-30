@@ -1,17 +1,25 @@
 import random
+import argparse
 from english_words import english_words_lower_set
 
 
-def check_penalties(penalties, word):
-    if penalties >= 12:
+def check_penalties(penalties, max_penalties, word):
+    if penalties >= max_penalties:
         print("YOU LOSE!")
         print("THE WORD WAS:", word)
         return True
+
     return False
 
 
-def random_word():
-    return random.choice(list(english_words_lower_set)).upper()
+def random_word(word_list, word_length):
+    words = []
+
+    for word in word_list:
+        if len(word) == word_length:
+            words.append(word.upper())
+
+    return random.choice(words)
 
 
 def display_word(word, tested_letters):
@@ -26,14 +34,15 @@ def display_word(word, tested_letters):
     print(result)
 
 
-def hangman():
-    word = random_word()
+def hangman(max_penalties, word_length):
+    word = random_word(english_words_lower_set, word_length)
+
     tested_letters = []
     penalties = 0
 
     print("GAME STARTED!")
 
-    while penalties < 12:
+    while penalties <= max_penalties:
 
         print()
         display_word(word, tested_letters)
@@ -73,8 +82,25 @@ def hangman():
             print("-", penalties, "PENALTIES")
             return
 
-        if check_penalties(penalties, word):
+        if check_penalties(penalties, max_penalties, word):
             return
 
-hangman()
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument(
+    "--penalties",
+    type=int,
+    default=12
+)
+
+parser.add_argument(
+    "--length",
+    type=int,
+    default=5
+)
+
+args = parser.parse_args()
+
+hangman(args.penalties, args.length)
 
